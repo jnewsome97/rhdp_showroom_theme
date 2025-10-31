@@ -1,9 +1,10 @@
-= RHDP default showroom theme
+= RHDP Showroom Theme with Execute Functionality
 // Settings:
 :experimental:
 :hide-uri-scheme:
 // Project URLs:
-:url-project: https://github.com/rhpds/rhdp_showroom_theme
+:url-project: https://github.com/jnewsome97/rhdp_showroom_theme
+:url-upstream: https://github.com/rhpds/rhdp_showroom_theme
 :url-ci-pipelines: {url-project}/pipelines
 :img-ci-status: {url-project}/badges/master/pipeline.svg
 // External URLs:
@@ -18,22 +19,82 @@
 :url-nvm-install: {url-nvm}#installation
 :url-source-maps: https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map
 
+== About This Fork
 
-== Use the Default UI
+This is a modified version of the {url-upstream}[RHDP default showroom theme] with **click-to-execute functionality** built in.
 
-If you want to simply use the default UI for your Antora-generated site, add the following UI configuration to your playbook:
+=== What's Modified
+
+This theme is identical to the upstream RHDP Showroom theme with one key addition:
+
+**Execute Functionality (`src/js/08-execute.js`)**
+
+- Adds click-to-execute functionality for code blocks with `role="execute"` in AsciiDoc
+- Makes entire code blocks clickable with a warm peachy/coral color scheme
+- Automatically sends commands to the Showroom terminal iframe when clicked
+- Simulates Enter key press to execute commands automatically
+- Hides default copy button on executable blocks for cleaner UI
+- Provides visual feedback (turns green) when commands are executed
+- Compatible with Homeroom/Bookbag workshop migration
+
+=== Features
+
+When you add `role="execute"` to your AsciiDoc code blocks, they become:
+
+- **Clickable**: Click anywhere on the code block to execute
+- **Visually distinct**: Warm peachy/coral background (#ffe8dc) with orange border (#ff9966)
+- **Interactive**: Hover effect darkens the background
+- **Responsive**: Visual feedback shows green when clicked
+- **Seamless**: Commands automatically paste and execute in the terminal
+
+== Use This Theme
+
+If you want to use this theme with execute functionality for your Antora-generated site, add the following UI configuration to your playbook:
 
 [source,yaml]
 ----
 ui:
   bundle:
-    url: https://github.com/rhpds/rhdp_showroom_theme/releases/download/v0.0.1/ui-bundle.zip
+    url: https://github.com/jnewsome97/rhdp_showroom_theme/releases/download/v1.0.0-execute/ui-bundle.zip
     snapshot: true
 ----
 
 NOTE: The `snapshot` flag tells Antora to fetch the UI when the `--fetch` command-line flag is present.
 This setting is required because updates to the UI bundle are pushed to the same URL.
 If the URL were to be unique, this setting would not be required.
+
+=== Using Execute Functionality in Your Content
+
+To make code blocks executable, add `role="execute"` to your AsciiDoc source blocks:
+
+[source,asciidoc]
+----
+[source,bash,role="execute"]
+\----
+oc get pods
+\----
+----
+
+This will render as a clickable code block with a warm peachy background that executes the command in the terminal when clicked.
+
+**Example:**
+
+[source,asciidoc]
+----
+To check your cluster nodes, execute:
+
+[source,bash,role="execute"]
+\----
+oc get nodes
+\----
+----
+
+The code block will automatically:
+
+1. Display with peachy/coral background and orange border
+2. Show a play icon (▶) in the top-right corner
+3. Execute the command in the terminal when clicked anywhere on the block
+4. Turn green briefly to show the command was executed
 
 Read on to learn how to customize the default UI for your own documentation.
 
